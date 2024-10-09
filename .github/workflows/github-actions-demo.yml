@@ -19,5 +19,5 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{github.event_name}}"
+      - run: echo "event name is" ${{github.event_name}}
   
