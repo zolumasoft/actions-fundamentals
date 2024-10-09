@@ -1,9 +1,5 @@
 #!/bin/sh -l
 
-GREETING="Hello, $GREET_NAME!"
+echo "Hello $1"
 
-echo "::notice file=entrypoint.sh,line=5::$GREETING"
-
-echo "greeting=$GREETING" >> "$GITHUB_OUTPUT"
-
-exit 0
+echo "time=$(date)" >> $GITHUB_OUTPUT
