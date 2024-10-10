@@ -13,6 +13,11 @@ on:
 
 
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: environment
+        required: true
 
 jobs:
   Build:
@@ -28,4 +33,47 @@ jobs:
         run: |
           echo "The repository ${{ github.repository }} contains the following files:"
           tree
+  
+  Test:
+    runs-on: ubuntu-latest
+    if: github.denv_name = 'workflow_dispatch'
+    needs: Build
+    environment: Test
+    steps:
+      - run: |
+          echo "🍕 Testing..."
+  
+  Load-Test:
+    runs-on: ubuntu-latest
+    needs: Build
+    environment: Load-Test
+    steps:
+      - run: |
+          echo "🚥 Testing..."
+          sleep 15
+  
+  Production:
+    runs-on: ubuntu-latest
+    needs: [Test, Load-Test]
+    environment:
+      name: Production
+      url: https://writeabout.net
+    if: github.event.inputs.environment == 'Production'
+    steps:
+      - run: |
+          echo "✈️ Step 1..."
+          sleep 10
+      - run: |
+          echo "✈️ Step 2..."
+          sleep 10
+      - run: |
+          echo "✈️ Step 3..."
+          sleep 10
+      - run: |
+          echo "✈️ Step 4..."
+          sleep 10
+      - run: |
+          echo "✈️ Step 5..."
+          sleep 10
+    
   
